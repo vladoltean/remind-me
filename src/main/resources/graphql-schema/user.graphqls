@@ -1,13 +1,15 @@
-type User {
-    id: ID
-    name: String
-}
-
 type Query {
     findAllUsers: [User]
     countUsers: Long
 }
 
 type Mutation {
-    newUser(name: String) : User
+    newUser(name: String!) : User!
+    deleteUser(id: ID!): Boolean!
 }
+
+type User {
+    id: ID!
+    name: String!
+}
+
