@@ -1,0 +1,13 @@
+type User {
+    id: ID
+    name: String
+}
+
+type Query {
+    findAllUsers: [User]
+    countUsers: Long
+}
+
+type Mutation {
+    newUser(name: String) : User
+}

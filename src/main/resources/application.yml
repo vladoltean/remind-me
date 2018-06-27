@@ -1,0 +1,10 @@
+# Enabling H2 Console:
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+     url: jdbc:h2:~/test
+     driver-class-name: org.h2.Driver
+     username: sa
+     password:
