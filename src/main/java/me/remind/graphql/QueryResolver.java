@@ -12,7 +12,7 @@ import me.remind.model.User;
 import me.remind.repository.UserRepository;
 
 /**
- * Created by vlad.oltean on 27/06/2018.
+ * By vlad.oltean on 27/06/2018.
  */
 @Component
 @AllArgsConstructor
