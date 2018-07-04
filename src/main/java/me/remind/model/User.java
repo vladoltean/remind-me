@@ -23,4 +23,14 @@ public class User {
 
     private String name;
 
+    private int roles;
+
+
+    //TODO: Move to separate entity?
+    private String fbAccessToken;
+
+    private String fbUserId;
+
+
+
 }

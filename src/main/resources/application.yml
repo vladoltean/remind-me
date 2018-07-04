@@ -9,10 +9,22 @@ spring:
      username: sa
      password:
 server:
-  port: 8011
-
+  port: 8080
 
 
 logging:
   level:
     org.hibernate.SQL: DEBUG
+    org.springframework.boot.autoconfigure.security: DEBUG
+
+facebook:
+    client:
+      clientId: 234613290655276
+      clientSecret: f9fcbcbf70955aa457e6f1ee82e41728
+      accessTokenUri: https://graph.facebook.com/oauth/access_token
+      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+      tokenName: oauth_token
+      authenticationScheme: query
+      clientAuthenticationScheme: form
+    resource:
+      userInfoUri: https://graph.facebook.com/me

@@ -1,5 +1,6 @@
 package me.remind.api;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,15 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
+    @GetMapping("all")
     public List<User> findAll(){
         return userRepository.findAll();
     }
+
+    @GetMapping
+    public Principal user(Principal principal) {
+        return principal;
+    }
+
 
 }
