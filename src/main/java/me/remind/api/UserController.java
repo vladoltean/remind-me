@@ -21,12 +21,12 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("all")
+    @GetMapping
     public List<User> findAll(){
         return userRepository.findAll();
     }
 
-    @GetMapping
+    @GetMapping("me")
     public Principal user(Principal principal) {
         return principal;
     }

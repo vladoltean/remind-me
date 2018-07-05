@@ -12,5 +12,6 @@ import me.remind.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findOneByFbUserId(String fbUserId);
+    User findOneByGoogleUserId(String googleUserId);
 
 }

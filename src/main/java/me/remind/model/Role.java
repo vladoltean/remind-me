@@ -2,6 +2,7 @@ package me.remind.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,8 +13,10 @@ import org.springframework.util.CollectionUtils;
  */
 public enum Role {
 
-    ADMIN("ROLE_ADMIN", 0b001),
-    USER("ROLE_USER", 0b010);
+    ADMIN("ROLE_ADMIN", 0b00001),
+    USER("ROLE_USER", 0b00010),
+    FACEBOOK("ROLE_FACEBOOK", 0b00100),
+    GOOGLE("ROLE_GOOGLE", 0b01000);
 
     private String name;
     private int bitmask;
@@ -23,15 +26,23 @@ public enum Role {
         this.bitmask = bitmask;
     }
 
-    public static List<GrantedAuthority> convert(int roles) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+    public static List<Role> convert(int roles) {
+        List<Role> authorities = new ArrayList<>();
 
         if ((roles & ADMIN.bitmask) != 0) {
-            authorities.add(new SimpleGrantedAuthority(ADMIN.name));
+            authorities.add(ADMIN);
         }
 
         if ((roles & USER.bitmask) != 0) {
-            authorities.add(new SimpleGrantedAuthority(USER.name));
+            authorities.add(USER);
+        }
+
+        if ((roles & FACEBOOK.bitmask) != 0) {
+            authorities.add(FACEBOOK);
+        }
+
+        if ((roles & GOOGLE.bitmask) != 0) {
+            authorities.add(GOOGLE);
         }
 
         return authorities;
@@ -48,6 +59,24 @@ public enum Role {
             rolesAsInt += role.bitmask;
         }
         return rolesAsInt;
+    }
+
+    public static List<GrantedAuthority> convertToAuthorities(int roles) {
+        List<Role> rolesList = Role.convert(roles);
+
+        return rolesList.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name))
+                .collect(Collectors.toList());
+    }
+
+    public static int addRole(int originalRole, Role newRoleToAdd){
+        List<Role> roles = Role.convert(originalRole);
+        if(roles.contains(newRoleToAdd)){
+            return originalRole;
+        }
+
+        roles.add(newRoleToAdd);
+        return Role.getRoles(roles);
     }
 
 }

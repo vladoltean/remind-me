@@ -13,6 +13,8 @@
 <body>
 <div class="container unauthenticated">
     With Facebook: <a href="/login/facebook" class="btn btn-primary">click here</a>
+    <br>
+    With Google: <a href="/login/google" class="btn btn-primary">click here</a>
 </div>
 <div class="container authenticated" style="display:none">
     <div class="container authenticated">
@@ -26,7 +28,7 @@
 <div class="container"></div>
 
 <script type="text/javascript">
-    $.get("/user", function (data) {
+    $.get("/user/me", function (data) {
         $("#user").html(data.userAuthentication.details.name);
         $(".unauthenticated").hide()
         $(".authenticated").show()
