@@ -1,6 +1,7 @@
 package me.remind.graphql;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
@@ -8,6 +9,7 @@ import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import lombok.AllArgsConstructor;
 import me.remind.model.User;
 import me.remind.repository.UserRepository;
+import me.remind.service.UserService;
 
 /**
  * By vlad.oltean on 27/06/2018.
@@ -16,18 +18,16 @@ import me.remind.repository.UserRepository;
 @AllArgsConstructor
 public class MutationResolver implements GraphQLMutationResolver {
 
-    private UserRepository userRepository;
+    private UserService userService;
 
+    @PreAuthorize("hasRole('ROLE_FACEBOOK')")
     public User newUser(String name) {
-        User user = new User();
-        user.setName(name);
-        return this.userRepository.save(user);
+        return this.userService.newUser(name);
     }
 
+    @PreAuthorize("hasRole('ROLE_GOOGLE')")
     public Boolean deleteUser(long id) {
-        this.userRepository.delete(id);
-        return true;
-
+        return this.userService.deleteUser(id);
     }
 
 }

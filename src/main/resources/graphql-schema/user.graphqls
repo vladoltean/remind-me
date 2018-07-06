@@ -11,5 +11,7 @@ type Mutation {
 type User {
     id: ID!
     name: String!
+    fbUserId: String!
+    googleUserId: String!
 }
 

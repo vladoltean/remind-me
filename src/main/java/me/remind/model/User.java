@@ -25,14 +25,15 @@ public class User {
 
     private int roles;
 
-
     //** OAUTH2 properties
     //TODO: Move to separate entity?
-    private String fbAccessToken;
     private String fbUserId;
+    private String fbAccessToken;
 
-    private String googleAccessToken;
+
     private String googleUserId;
+    private String googleAccessToken;
+
 
 
 

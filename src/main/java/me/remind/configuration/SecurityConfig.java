@@ -14,6 +14,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
@@ -35,6 +36,7 @@ import me.remind.repository.UserRepository;
  */
 @Configuration
 @EnableOAuth2Client
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -49,8 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests() //todo permission based access to graphql resources.. hmm
-                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/user", "/graphql/**", "/graphiql**")
+                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/user", "/graphiql**")
                 .permitAll()
+                .antMatchers("/graphql").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
