@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -60,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
                 .logout().logoutSuccessUrl("/").permitAll()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);;
 
     }
 
@@ -94,13 +96,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private Filter ssoFilter(ClientResources client, String path) {
-        OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(path);
+        JwtOauth2AuthenticationFilter filter = new JwtOauth2AuthenticationFilter(path);
 
         OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
         filter.setRestTemplate(template);
 
         MyUserInfoTokenServices userInfoTokenServices = new MyUserInfoTokenServices(
                         client.getResource().getUserInfoUri(), client.getClient().getClientId(), userRepository);
+
         userInfoTokenServices.setRestTemplate(template);
         filter.setTokenServices(userInfoTokenServices);
 
