@@ -22,9 +22,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 /**
  * By vlad.oltean on 26/07/2018.
  */
-public class JwtOauth2AuthenticationFilter extends OAuth2ClientAuthenticationProcessingFilter {
+public class CustomJwtOauth2AuthenticationFilter extends OAuth2ClientAuthenticationProcessingFilter {
 
-    public JwtOauth2AuthenticationFilter(String defaultFilterProcessesUrl) {
+    public CustomJwtOauth2AuthenticationFilter(String defaultFilterProcessesUrl) {
         super(defaultFilterProcessesUrl);
     }
 
