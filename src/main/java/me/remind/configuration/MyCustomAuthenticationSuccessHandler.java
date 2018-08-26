@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -23,7 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 /**
  * By vlad.oltean on 28/07/2018.
  */
-public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class MyCustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -39,6 +40,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
+        response.setStatus(302);
+        response.addHeader(HttpHeaders.LOCATION, "http://localhost:3000");
+        response.addHeader(HttpHeaders.SET_COOKIE, "jwt=" + token + "; Path=/; HttpOnly");
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 }

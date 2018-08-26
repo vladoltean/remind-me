@@ -57,8 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
                 .logout().logoutSuccessUrl("/").permitAll()
                 .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);;
+                .csrf().disable();
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);;
 
     }
 
@@ -103,7 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         userInfoTokenServices.setRestTemplate(template);
         filter.setTokenServices(userInfoTokenServices);
 
-        filter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
+        filter.setAuthenticationSuccessHandler(new MyCustomAuthenticationSuccessHandler());
 
         return filter;
     }
