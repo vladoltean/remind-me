@@ -29,8 +29,6 @@ public class MyCustomAuthenticationSuccessHandler implements AuthenticationSucce
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         //add JWT token on response
-        System.out.println("-----> Authentication:" + authentication);
-
         OAuth2Authentication auth = (OAuth2Authentication) authentication;
         UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) auth.getUserAuthentication();
         // TODO: add details to token
@@ -42,7 +40,7 @@ public class MyCustomAuthenticationSuccessHandler implements AuthenticationSucce
                 .compact();
         response.setStatus(302);
         response.addHeader(HttpHeaders.LOCATION, "http://localhost:3000");
-        response.addHeader(HttpHeaders.SET_COOKIE, "jwt=" + token + "; Path=/; HttpOnly");
+        response.addHeader(HttpHeaders.SET_COOKIE, "jwt=" + token + "; Path=/;"); //removed http only
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 }
