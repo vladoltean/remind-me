@@ -7,6 +7,7 @@ import static me.remind.configuration.SecurityConstants.TOKEN_PREFIX;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,8 @@ public class MyCustomAuthenticationSuccessHandler implements AuthenticationSucce
 
         String token = Jwts.builder()
                 .setSubject(authentication.getPrincipal().toString())
+                //TODO: Refactor
+                .setClaims((Map<String, Object>) user.getDetails())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();

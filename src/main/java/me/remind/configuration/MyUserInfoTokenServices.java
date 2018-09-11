@@ -76,7 +76,11 @@ public class MyUserInfoTokenServices extends UserInfoTokenServices {
                 "N/A",
                 Role.convertToAuthorities(user.getRoles()));
 
-        token.setDetails(oAuth2Authentication.getUserAuthentication().getDetails());
+        // TODO: refactor this
+        Map<String, String> authDetails = (Map<String, String>) oAuth2Authentication.getUserAuthentication().getDetails();
+        authDetails.put("email", user.getEmail());
+
+        token.setDetails(authDetails);
         return new OAuth2Authentication(oAuth2Authentication.getOAuth2Request(), token);
     }
 
