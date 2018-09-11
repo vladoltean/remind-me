@@ -25,6 +25,8 @@ public class User {
 
     private int roles;
 
+    private String email;
+
     //** OAUTH2 properties
     //TODO: Move to separate entity?
     private String fbUserId;
