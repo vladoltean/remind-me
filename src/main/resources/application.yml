@@ -1,16 +1,16 @@
-# Enabling H2 Console:
+
 spring:
-  h2:
-    console:
-      enabled: true
-  datasource:
-     url: jdbc:h2:~/test
-     driver-class-name: org.h2.Driver
-     username: sa
-     password:
+  cloud:
+    gcp:
+      project-id: remindme-209308
+      spanner:
+        instance-id: remind-me
+        database: remind-me
+        credentials:
+          location: file:/Users/vlad.oltean/java/remind-me/remindme-209308-956813e606e7-cloud-spanner-pk.json
+
 server:
   port: 8080
-
 
 logging:
   level:
