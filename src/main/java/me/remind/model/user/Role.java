@@ -1,4 +1,4 @@
-package me.remind.model;
+package me.remind.model.user;
 
 import java.util.ArrayList;
 import java.util.List;

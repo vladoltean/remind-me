@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -28,7 +27,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.filter.CompositeFilter;
 
 import lombok.Getter;
-import me.remind.repository.UserRepository;
+import me.remind.service.UserService;
 
 /**
  * By vlad.oltean on 03/07/2018.
@@ -43,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     OAuth2ClientContext oAuth2ClientContext;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Override //todo: add jwt authorization filter
     protected void configure(HttpSecurity http) throws Exception {
@@ -84,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return registration;
     }
 
-    private Filter ssoFilter(){
+    private Filter ssoFilter() {
         CompositeFilter compositeFilter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
         filters.add(ssoFilter(facebook(), "/login/facebook"));
@@ -100,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setRestTemplate(template);
 
         MyUserInfoTokenServices userInfoTokenServices = new MyUserInfoTokenServices(
-                        client.getResource().getUserInfoUri(), client.getClient().getClientId(), userRepository);
+                client.getResource().getUserInfoUri(), client.getClient().getClientId(), userService);
 
         userInfoTokenServices.setRestTemplate(template);
         filter.setTokenServices(userInfoTokenServices);

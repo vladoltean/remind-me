@@ -2,13 +2,12 @@ package me.remind.graphql;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 
 import lombok.AllArgsConstructor;
-import me.remind.model.User;
+import me.remind.model.user.User;
 import me.remind.repository.UserRepository;
 
 /**

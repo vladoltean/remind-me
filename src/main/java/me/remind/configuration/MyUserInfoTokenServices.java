@@ -1,9 +1,7 @@
 package me.remind.configuration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -17,27 +15,27 @@ import org.springframework.security.oauth2.common.exceptions.InvalidTokenExcepti
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
 
-import me.remind.model.Role;
-import me.remind.model.User;
-import me.remind.repository.UserRepository;
+import me.remind.model.user.Role;
+import me.remind.model.user.User;
+import me.remind.service.UserService;
 
 /**
  * By vlad.oltean on 04/07/2018.
  */
 public class MyUserInfoTokenServices extends UserInfoTokenServices {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private String userInfoEndpointUrl;
     private String clientId;
     private String tokenType = DefaultOAuth2AccessToken.BEARER_TYPE;
 
     private OAuth2RestTemplate restTemplate;
 
-    public MyUserInfoTokenServices(String userInfoEndpointUrl, String clientId, UserRepository userRepository) {
+    public MyUserInfoTokenServices(String userInfoEndpointUrl, String clientId, UserService userService) {
         super(userInfoEndpointUrl, clientId);
         this.clientId = clientId;
         this.userInfoEndpointUrl = userInfoEndpointUrl;
-        this.userRepository = userRepository;
+        this.userService = userService;
 
 
     }
@@ -69,7 +67,7 @@ public class MyUserInfoTokenServices extends UserInfoTokenServices {
         String principal = (String) oAuth2Authentication.getPrincipal();
         String name = (String) ((HashMap) (oAuth2Authentication.getUserAuthentication().getDetails())).get("name");
 
-        User user = handleUser(principal, accessToken, name);
+        User user = userService.handleAuthenticationForUser(principal, accessToken, name, getUserEmail(principal, accessToken), getUserType());
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 oAuth2Authentication.getPrincipal(),
@@ -84,96 +82,13 @@ public class MyUserInfoTokenServices extends UserInfoTokenServices {
         return new OAuth2Authentication(oAuth2Authentication.getOAuth2Request(), token);
     }
 
-    /**
-     * Save user to database if does not exist.
-     * It also updates his name and access token for the specific login method used, if exists.
-     *
-     * @param id          - from the principal, which may be either of the oauth server ids.
-     * @param accessToken - the access token specific to the oauth server used.
-     * @param name        - name of the user.
-     * @return - saved Entity.
-     */
-    private User handleUser(String id, String accessToken, String name) {
-        UserType userType = getUserType();
-        User user;
 
-        String userEmail = getUserEmail(id, accessToken);
-
-        // search by email
-        // get users email in initial call and add it to the Principal object :)
-        user = userRepository.findOneByEmail(userEmail);
-
-        if (user == null) {
-            //if no user was found by email, search by id.
-            // Refuse users that do not have email?
-            switch (userType) {
-                case FACEBOOK:
-                    user = userRepository.findOneByFbUserId(id);
-                    break;
-                case GOOGLE:
-                    user = userRepository.findOneByGoogleUserId(id);
-                    break;
-                default:
-                    throw new RuntimeException("User type is not supported!");
-            }
-        }
-
-
-        //CREATE USER
-        if (user == null) {
-            user = new User();
-
-            List<Role> roles = new ArrayList<>();
-            roles.add(Role.USER);
-
-            switch (userType) {
-                case FACEBOOK:
-                    user.setFbUserId(id);
-                    roles.add(Role.FACEBOOK);
-                    break;
-                case GOOGLE:
-                    user.setGoogleUserId(id);
-                    roles.add(Role.GOOGLE);
-                    break;
-                default:
-                    throw new RuntimeException("User type is not supported!");
-            }
-            user.setRoles(Role.getRoles(roles));
-            user.setEmail(userEmail);
-        }
-
-        //UPDATE USER:
-        // if access token or name have changed, update them
-        user.setName(name);
-        user.setEmail(userEmail);
-
-        int roles;
-        switch (userType) {
-            case FACEBOOK:
-                user.setFbAccessToken(accessToken);
-                user.setFbUserId(id);
-                roles = Role.addRole(user.getRoles(), Role.FACEBOOK);
-                break;
-            case GOOGLE:
-                user.setGoogleAccessToken(accessToken);
-                user.setGoogleUserId(id);
-                roles = Role.addRole(user.getRoles(), Role.GOOGLE);
-                break;
-            default:
-                throw new RuntimeException("User type is not supported!");
-        }
-        user.setRoles(roles);
-
-        return userRepository.save(user);
-    }
-
-
-    private UserType getUserType() {
+    private UserService.UserType getUserType() {
         if (this.userInfoEndpointUrl.contains("facebook")) {
-            return UserType.FACEBOOK;
+            return UserService.UserType.FACEBOOK;
         }
         if (this.userInfoEndpointUrl.contains("google")) {
-            return UserType.GOOGLE;
+            return UserService.UserType.GOOGLE;
         }
         throw new RuntimeException("User Type could not be determined");
     }
@@ -190,9 +105,5 @@ public class MyUserInfoTokenServices extends UserInfoTokenServices {
         return email;
     }
 
-    enum UserType {
-        FACEBOOK,
-        GOOGLE
-    }
 
 }

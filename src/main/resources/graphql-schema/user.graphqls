@@ -14,10 +14,14 @@ type User {
     email: String!
     roles: Int!
 
-    fbUserId: String!
-    fbAccessToken: String!
+    facebookUser: OAuthUser!
 
     googleUserId: String!
     googleAccessToken: String!
 }
 
+type OAuthUser {
+    id: ID!
+    authServerUserId: String!
+    authServerAccessToken: String!
+}

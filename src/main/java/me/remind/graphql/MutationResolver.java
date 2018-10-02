@@ -1,14 +1,12 @@
 package me.remind.graphql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
 import lombok.AllArgsConstructor;
-import me.remind.model.User;
-import me.remind.repository.UserRepository;
+import me.remind.model.user.User;
 import me.remind.service.UserService;
 
 /**

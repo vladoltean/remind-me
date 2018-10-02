@@ -1,8 +1,9 @@
-package me.remind.model;
+package me.remind.model.user;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,11 +29,11 @@ public class User {
     private String email;
 
     //** OAUTH2 properties
+
+    @OneToOne
+    private OAuthUser facebookUser;
+
     //TODO: Move to separate entity?
-    private String fbUserId;
-    private String fbAccessToken;
-
-
     private String googleUserId;
     private String googleAccessToken;
 
