@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests() //todo permission based access to graphql resources.. hmm
-                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/user", "/graphiql**")
+                .antMatchers("/", "/monitoring/**", "/login**", "/error**", "/user", "/graphiql**")
                 .permitAll()
                 .antMatchers("/graphql").permitAll()
                 .anyRequest()
