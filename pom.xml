@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 		<graphql-java.version>3.10.0</graphql-java.version>
 		<graphql-java-tools.version>4.3.0</graphql-java-tools.version>
+		<appengine.maven.plugin>1.3.2</appengine.maven.plugin>
 	</properties>
 
 	<dependencies>
@@ -105,6 +106,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>${appengine.maven.plugin}</version>
 			</plugin>
 		</plugins>
 	</build>
