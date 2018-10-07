@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public Boolean deleteUser(long id) {
-        this.userRepository.delete(id);
+        this.userRepository.deleteById(id);
         return true;
     }
 
