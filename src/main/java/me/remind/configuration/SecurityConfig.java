@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/login**", "/webjars/**", "/error**", "/user", "/graphiql**")
                 .permitAll()
                 .antMatchers("/graphql").permitAll()
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
