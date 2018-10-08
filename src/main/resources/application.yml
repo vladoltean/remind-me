@@ -6,6 +6,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 server:
   port: 8080
 
@@ -14,6 +17,9 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.springframework.boot.autoconfigure.security: DEBUG
+    org.springframework.data: DEBUG
+    org.springframework.web: DEBUG
+    com.coxautodev.graphql: DEBUG
 
 facebook:
     client:
