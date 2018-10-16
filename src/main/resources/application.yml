@@ -1,8 +1,8 @@
 spring:
   datasource:
-     url:
-     username: root
-     password:
+    url: jdbc:mysql://localhost:3306/remind_me
+    username: root
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
