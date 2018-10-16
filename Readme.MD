@@ -5,3 +5,12 @@ Backend application for scheduling any kind of appointments, meetings, things to
 
 ##### Technological perspective
 Spring Boot + GraphQL + mysql
+
+
+##### Deployment instructions
+make new commit
+
+Push to github
+
+Push to heroku: git push heroku master
+
