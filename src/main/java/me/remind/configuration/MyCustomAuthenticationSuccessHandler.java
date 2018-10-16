@@ -27,6 +27,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
  */
 public class MyCustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    private String redirectUrl = "http://localhost:8080";
+
+    public MyCustomAuthenticationSuccessHandler(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    public MyCustomAuthenticationSuccessHandler() {
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         //add JWT token on response
@@ -42,7 +51,7 @@ public class MyCustomAuthenticationSuccessHandler implements AuthenticationSucce
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
         response.setStatus(302);
-        response.addHeader(HttpHeaders.LOCATION, "http://localhost:3000");
+        response.addHeader(HttpHeaders.LOCATION, this.redirectUrl);
         response.addHeader(HttpHeaders.SET_COOKIE, "jwt=" + token + "; Path=/;"); //removed http only
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }

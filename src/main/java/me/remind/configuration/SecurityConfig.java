@@ -30,6 +30,7 @@ import org.springframework.web.filter.CompositeFilter;
 import org.springframework.web.filter.CorsFilter;
 
 import lombok.Getter;
+import me.remind.configuration.properties.WebProperties;
 import me.remind.service.UserService;
 
 /**
@@ -46,6 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private WebProperties webProperties;
 
     @Override //todo: add jwt authorization filter
     protected void configure(HttpSecurity http) throws Exception {
@@ -108,7 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         userInfoTokenServices.setRestTemplate(template);
         filter.setTokenServices(userInfoTokenServices);
 
-        filter.setAuthenticationSuccessHandler(new MyCustomAuthenticationSuccessHandler());
+        filter.setAuthenticationSuccessHandler(new MyCustomAuthenticationSuccessHandler(webProperties.getUrl()));
 
         return filter;
     }
