@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.0.37:3306/remind-me
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+server:
+  port: 8080
+
+web:
+  url: http://localhost:3000
