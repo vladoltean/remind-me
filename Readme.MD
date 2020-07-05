@@ -8,9 +8,7 @@ Spring Boot + GraphQL + mysql
 
 
 ##### Deployment instructions
-make new commit
-
-Push to github
-
-Push to heroku: git push heroku master
+* make new commit
+* Push to github
+* Push to heroku: `git push heroku master`
 
